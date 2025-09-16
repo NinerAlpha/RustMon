@@ -54,6 +54,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // pannels:
   permsPanel = false;
+  pterodactylConfigPanel = false;
+  pluginManagerPanel = false;
+  conVarsPanel = false;
 
   @ViewChild('chatCompo', {static: false}) chatCompo?: ChatComponent;
   @ViewChild('console', {static: false}) consoleBox: any;

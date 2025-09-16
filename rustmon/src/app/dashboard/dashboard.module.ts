@@ -24,6 +24,9 @@ import { PlayerToolsComponent } from './player-tools/player-tools.component';
 import { UmodComponent } from './umod/umod.component';
 import { PermsComponent } from './perms/perms.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { PterodactylConfigComponent } from './pterodactyl-config/pterodactyl-config.component';
+import { PluginManagerComponent } from './plugin-manager/plugin-manager.component';
+import { ConVarsManagerComponent } from './convars-manager/convars-manager.component';
 
 const routes: Routes = [
   {
@@ -45,6 +48,9 @@ const routes: Routes = [
     PlayerToolsComponent,
     UmodComponent,
     PermsComponent,
+    PterodactylConfigComponent,
+    PluginManagerComponent,
+    ConVarsManagerComponent,
   ],
   imports: [
     CommonModule,

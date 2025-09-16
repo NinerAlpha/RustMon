@@ -1,0 +1,272 @@
+.container {
+  position: fixed;
+  width: 100vw;
+  background: #1310109c;
+  top: 0px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  article {
+    width: 90vw;
+    max-width: 1400px;
+    height: 80vh;
+    border: 1px solid black;
+    padding: 3px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 5px black;
+    background-color: #2b2924;
+    background-image: url(/assets/blur.png);
+    display: flex;
+    flex-direction: column;
+    
+    header {
+      background-color: #181818;
+      text-align: center;
+      color: #f7ebe1;
+      padding: 15px;
+      position: relative;
+      
+      svg {
+        width: 15px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        display: block;
+      }
+    }
+    
+    nav {
+      background: #181818;
+      border-top: 1px solid #312f2a;
+      padding: 10px;
+      
+      .search-section {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        
+        input[type="text"] {
+          flex: 1;
+          max-width: 300px;
+        }
+        
+        select {
+          min-width: 150px;
+        }
+        
+        button {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+    
+    section {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      
+      .convars-table {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .table-header {
+          display: grid;
+          grid-template-columns: 2fr 2fr 1fr 1fr;
+          gap: 10px;
+          padding: 15px;
+          background: #333;
+          color: #f7ebe1;
+          font-weight: bold;
+          border-bottom: 2px solid #555;
+          
+          .col-name, .col-value, .col-type, .col-actions {
+            padding: 5px;
+          }
+        }
+        
+        .table-body {
+          flex: 1;
+          overflow-y: auto;
+          
+          .convar-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            transition: background-color 0.2s;
+            
+            &:hover {
+              background-color: #2a2a2a;
+            }
+            
+            &.modified {
+              background-color: #2d4a2d;
+              border-left: 4px solid #4caf50;
+            }
+            
+            .col-name {
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+              
+              .convar-name {
+                color: #55aaff;
+                font-family: monospace;
+                font-weight: bold;
+              }
+              
+              .convar-category {
+                color: #888;
+                font-size: 12px;
+                text-transform: uppercase;
+              }
+              
+              .convar-description {
+                svg {
+                  width: 16px;
+                  height: 16px;
+                  color: #888;
+                  cursor: help;
+                }
+              }
+            }
+            
+            .col-value {
+              display: flex;
+              align-items: center;
+              
+              .convar-input {
+                width: 100%;
+                background: #444;
+                border: 2px solid #666;
+                color: #fff;
+                padding: 5px;
+                border-radius: 4px;
+                
+                &:focus {
+                  border-color: #55aaff;
+                  outline: none;
+                }
+              }
+              
+              .convar-value {
+                color: #f7ebe1;
+                font-family: monospace;
+                
+                &.boolean {
+                  color: #4caf50;
+                  font-weight: bold;
+                }
+                
+                &.number {
+                  color: #ff9800;
+                }
+              }
+            }
+            
+            .col-type {
+              display: flex;
+              align-items: center;
+              
+              .type-badge {
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+                
+                &.string {
+                  background: #2196f3;
+                  color: white;
+                }
+                
+                &.number {
+                  background: #ff9800;
+                  color: white;
+                }
+                
+                &.boolean {
+                  background: #4caf50;
+                  color: white;
+                }
+              }
+            }
+            
+            .col-actions {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              
+              button.mini {
+                width: 30px;
+                height: 30px;
+                padding: 5px;
+                
+                &.success {
+                  background-color: #4caf50;
+                  
+                  &:hover {
+                    background-color: #45a049;
+                  }
+                }
+                
+                &.danger {
+                  background-color: #dc3545;
+                  
+                  &:hover {
+                    background-color: #c82333;
+                  }
+                }
+                
+                svg {
+                  width: 14px;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        color: #777;
+        
+        svg {
+          width: 64px;
+          height: 64px;
+          margin-bottom: 20px;
+          opacity: 0.5;
+        }
+        
+        h3 {
+          margin: 10px 0;
+          color: #999;
+        }
+        
+        p {
+          margin: 0;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

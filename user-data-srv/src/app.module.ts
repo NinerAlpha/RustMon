@@ -8,6 +8,8 @@ import { RustMapService } from './rustmap/rustmap.service';
 import { UmodService } from './umod/umod.service';
 import { environment } from './environment';
 import { ApmModule } from '@student-coin/elastic-apm-nest';
+import { PterodactylModule } from './pterodactyl/pterodactyl.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 const imports: any = environment.APM.enabled ? [
   ApmModule.forRootAsync({
@@ -26,7 +28,13 @@ const imports: any = environment.APM.enabled ? [
 ] : [];
 
 @Module({
-  imports: [HttpModule].concat(imports),
+  imports: [
+    HttpModule,
+    PterodactylModule,
+    MulterModule.register({
+      dest: './uploads',
+    })
+  ].concat(imports),
   controllers: [AppController],
   providers: [ValveApiService, IPGeocodeService, CacheRedisService, RustMapService, UmodService],
 })
