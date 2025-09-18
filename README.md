@@ -1,72 +1,122 @@
-# RustMon 2.0.0 - Pterodactyl Integration
+# RustMon 3.0.0 - Multi-User SaaS Platform
 
-Advanced Rust server administration panel with deep Pterodactyl Panel integration. See our 👉🏼 [Live Instance](https://rustmon.tercerpiso.net)
+Advanced multi-user Rust server management platform with deep Pterodactyl Panel integration and modern authentication. See our 👉🏼 [Live Instance](https://rustmon.tercerpiso.net)
 
 ### Current features
 
-- Multiple servers login record.
-- Simple full control (Chat, Players and Console) on single screen
+- **Multi-User Platform**: Support for multiple users with secure authentication
+- **OAuth Integration**: Login with Discord, Steam, or Google
+- **Server Management**: Add and manage multiple Rust servers per user
+- **Modern UI**: Completely redesigned interface with modern design principles
 - **NEW**: Advanced Plugin Management with uMod.org integration
   - One-click plugin updates via SFTP
   - Plugin upload/delete directly from web UI
   - Version mismatch detection and notifications
-- Permissions groups and export/import to apply on multiple servers
+  - Support for both Oxide and Carbon frameworks
+- **Enhanced Permissions Management**
+  - Plugin-based permission organization
+  - Visual permission toggles
+  - Per-user and per-group permissions
+  - Import/export functionality
 - **NEW**: ConVars Management
   - Edit server configuration variables through web UI
   - Real-time value updates via RCON
   - Categorized display with descriptions
-- **NEW**: Pterodactyl Panel Integration
+- **Enhanced Pterodactyl Panel Integration**
   - SFTP/FTP connection to server containers
   - Direct file system access for advanced management
   - Secure credential storage
-- All configurations on a simple panel
-- Reboot with time warning
-- Players tools like autokick when high ping
+- **Automated Wipe Management**
+  - Schedule weekly, monthly, or bi-weekly wipes
+  - Custom map support and random seed generation
+  - Configurable wipe options (map, player data, blueprints)
+  - Startup command execution
+- Real-time chat, player management, and console access
+- Player tools including auto-kick functionality
 
-### New in v2.0.0
+### New in v3.0.0
 
-- **Pterodactyl Panel Integration**: Connect directly to your Pterodactyl-hosted Rust servers
-- **Advanced Plugin Manager**: Upload, update, enable/disable plugins with uMod.org integration
-- **ConVars Manager**: Edit server configuration variables through a user-friendly interface
-- **Enhanced Security**: Encrypted storage of sensitive credentials
-- **File System Access**: Direct access to oxide/plugins and oxide/config directories
+- **Multi-User SaaS Platform**: Complete transformation to support multiple users
+- **Modern Authentication**: OAuth integration with Discord, Steam, and Google
+- **User Dashboard**: Centralized server management for each user
+- **Enhanced Plugin Manager**: Support for both Oxide and Carbon frameworks
+- **Advanced Permissions UI**: Plugin-based permission organization with visual toggles
+- **Automated Wipe System**: Comprehensive wipe scheduling and management
+- **Modern UI Design**: Complete redesign with improved UX and visual appeal
+- **Enhanced Security**: JWT-based authentication and encrypted credential storage
 
 ### Roadmap
 
-- More player tools (auto respond commands, auto kick more options, Skip queue)
-- Discord login screen
-- Player permissions
-- Discord bot to send server information, bypass messages between chat and discord channel, assign groups to discord users
-- Commands memory with up arrow (rewrite last command sended) on console
-- RustMon Blacklist (a blacklist of players shared between rustmon clients)
+- **Discord Bot Integration**: Server notifications and chat bridging
+- **Advanced Player Tools**: Auto-respond commands, enhanced auto-kick options
+- **Shared Blacklist**: Community-driven player blacklist system
+- **Mobile App**: Native mobile application for server monitoring
+- **Analytics Dashboard**: Server performance analytics and insights
+- **Team Management**: Multi-admin support with role-based permissions
+- **API Access**: RESTful API for third-party integrations
 
-## Pterodactyl Setup
+## Getting Started
 
-To use the new Pterodactyl integration features:
+### 1. Authentication Setup
 
-1. **Get your Pterodactyl API Key**:
-   - Log into your Pterodactyl panel
-   - Go to Account Settings → API Credentials
-   - Create a new API key with appropriate permissions
+Set up OAuth applications for authentication providers:
 
-2. **Get SFTP Details**:
-   - In your server panel, go to Settings → SFTP Details
-   - Note the server address, port, username, and password
+**Discord Application:**
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Create a new application
+3. Add redirect URI: `http://your-domain.com/auth/discord/callback`
+4. Note the Client ID and Client Secret
 
-3. **Configure RustMon**:
-   - Click the gear icon in the top-right of RustMon
-   - Select "Pterodactyl Configuration"
-   - Enter your panel URL, API key, server ID, and SFTP details
-   - Test the connection before saving
+**Steam Authentication:**
+1. Get your Steam API key from [Steam Dev Portal](https://steamcommunity.com/dev/apikey)
 
-4. **Required Permissions**:
-   - Your Pterodactyl user needs file management permissions
-   - SFTP access must be enabled for your server
-   - The server should have uMod/Oxide installed
+**Google OAuth:**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create OAuth 2.0 credentials
+3. Add redirect URI: `http://your-domain.com/auth/google/callback`
 
-**Note**: The Pterodactyl integration requires the backend service to have network access to your Pterodactyl panel and SFTP server.
+### 2. Environment Variables
+
+Update your environment variables:
+
+```bash
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key
+DISCORD_CLIENT_ID=your-discord-client-id
+DISCORD_CLIENT_SECRET=your-discord-client-secret
+STEAM_API_KEY=your-steam-api-key
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+FRONTEND_URL=http://localhost:4200
+API_URL=http://localhost:3000
+```
+
+### 3. Adding Your First Server
+
+1. **Login**: Use Discord, Steam, or Google to authenticate
+2. **Add Server**: Click "Add Server" in your dashboard
+3. **Choose Connection Type**:
+   - **RCON Only**: Basic connection for chat/console access
+   - **Pterodactyl Panel**: Full integration with advanced features
+4. **Configure**: Enter your server details and test the connection
+5. **Manage**: Access your server's management interface
+
+### 4. Pterodactyl Integration
+
+For advanced features, configure Pterodactyl integration:
+
+1. **API Key**: Get from your Pterodactyl panel (Account → API Credentials)
+2. **SFTP Details**: Found in your server's Settings → SFTP Details
+3. **Permissions**: Ensure file management and SFTP access are enabled
+4. **Framework**: RustMon automatically detects Oxide or Carbon
 
 ## Screenshots:
+
+### New Landing Page
+![Landing](https://i.imgur.com/newlanding.png)
+
+### User Dashboard
+![User Dashboard](https://i.imgur.com/newdashboard.png)
 
 ### Login
 
@@ -106,9 +156,33 @@ To use the new Pterodactyl integration features:
 ### NEW: Pterodactyl Configuration
 ![pterodactyl config](https://i.imgur.com/newptero.png)
 
+### NEW: Enhanced Permissions Manager
+![permissions v2](https://i.imgur.com/newperms.png)
+
+### NEW: Wipe Manager
+![wipe manager](https://i.imgur.com/newwipe.png)
+
 ## Architecture
 
-RustMon now consists of three main components:
+RustMon 3.0 is a complete SaaS platform consisting of:
+
+### Frontend (Angular)
+- **Landing Page**: Marketing page with OAuth login options
+- **User Dashboard**: Server management interface for authenticated users
+- **Server Management**: Individual server control panels
+- **Modern UI**: Responsive design with improved UX
+
+### Backend (NestJS)
+- **Authentication Service**: OAuth integration with multiple providers
+- **Server Management**: CRUD operations for user servers
+- **Pterodactyl Integration**: SFTP and API integration
+- **Plugin Management**: uMod.org integration with framework detection
+- **Wipe Automation**: Scheduled and manual wipe execution
+
+### Database Layer
+- **Redis Cache**: Session management and temporary data storage
+- **User Data**: Encrypted storage of sensitive credentials
+- **Server Configurations**: Per-user server settings and schedules
 
 ## Run and build
 
