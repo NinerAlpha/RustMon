@@ -13,6 +13,7 @@ export class UmodComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Input() visible: boolean = false;
   @Input() version: string = '0.0.1';
+  @Input() modFramework: 'oxide' | 'carbon' = 'oxide';
   @Output() pluginUpdates = new EventEmitter<void>();
 
   constructor(
@@ -159,6 +160,16 @@ export class UmodComponent implements OnInit {
   }
   load(name: string) {
     this.rustSrv.oload(name);
+  }
+
+  updatePlugin(plugin: any) {
+    // Implementation for updating plugin via SFTP
+    console.log('Updating plugin:', plugin.id, 'to version:', plugin.latest_release_version);
+    
+    // This would call the backend service to:
+    // 1. Download latest version from uMod
+    // 2. Upload to correct directory (oxide/plugins or carbon/plugins)
+    // 3. Reload the plugin
   }
 
 }

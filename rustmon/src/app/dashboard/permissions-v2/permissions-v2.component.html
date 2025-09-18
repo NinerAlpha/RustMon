@@ -1,0 +1,157 @@
+<div class="container">
+  <article>
+    <header>
+      Advanced Permissions Manager
+      <svg (click)="close.emit()" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" class="svg-inline--fa fa-times fa-w-11">
+        <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" class=""></path>
+      </svg>
+    </header>
+    
+    <nav>
+      <div [class.active]="tab==0" (click)="tab=0">
+        Group Permissions
+      </div>
+      <div [class.active]="tab==1" (click)="tab=1">
+        User Permissions
+      </div>
+    </nav>
+    
+    <!-- Group Permissions Tab -->
+    <section *ngIf="tab == 0" class="permissions-section">
+      <div class="groups-sidebar">
+        <div class="sidebar-header">
+          <h4>Groups</h4>
+          <button class="mini" (click)="createGroup()" pTooltip="Create new group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="groups-list">
+          <div class="group-item" 
+               *ngFor="let group of groups" 
+               [class.active]="selectedGroup === group"
+               (click)="selectGroup(group)">
+            <span class="group-name">{{group}}</span>
+            <button class="delete-group" 
+                    *ngIf="group !== 'default' && group !== 'admin'"
+                    (click)="deleteGroup(group); $event.stopPropagation()"
+                    pTooltip="Delete group">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="permissions-main">
+        <div *ngIf="!selectedGroup" class="select-group-message">
+          <h3>Select a group to manage permissions</h3>
+          <p>Choose a group from the sidebar to view and edit its permissions</p>
+        </div>
+        
+        <div *ngIf="selectedGroup && loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading group details...</p>
+        </div>
+        
+        <div *ngIf="selectedGroup && !loading" class="group-details">
+          <div class="group-header">
+            <h3>{{selectedGroup}} Group</h3>
+            <button class="add-member-btn" (click)="addUserToGroup()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                <path fill="currentColor" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
+              </svg>
+              Add Member
+            </button>
+          </div>
+          
+          <div class="group-members" *ngIf="groupMembers.length > 0">
+            <h4>Members ({{groupMembers.length}})</h4>
+            <div class="members-list">
+              <div class="member-item" *ngFor="let member of groupMembers">
+                <span class="member-name">{{member.nick || 'Unnamed'}}</span>
+                <span class="member-id">{{member.steamID}}</span>
+                <button class="remove-member" (click)="removeUserFromGroup(member)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                    <path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="permissions-section">
+            <h4>Permissions</h4>
+            <div class="plugins-permissions">
+              <div class="plugin-section" *ngFor="let pluginPerm of pluginPermissions">
+                <div class="plugin-header">
+                  <h5>{{pluginPerm.plugin}}</h5>
+                  <span class="permission-count">
+                    {{pluginPerm.permissions.filter(p => hasPermission(p)).length}}/{{pluginPerm.permissions.length}}
+                  </span>
+                </div>
+                
+                <div class="permissions-grid">
+                  <button class="permission-btn" 
+                          *ngFor="let permission of pluginPerm.permissions"
+                          [class.active]="hasPermission(permission)"
+                          (click)="togglePermission(permission)"
+                          [pTooltip]="permission"
+                          tooltipPosition="top">
+                    {{permission.split('.').slice(1).join('.')}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- User Permissions Tab -->
+    <section *ngIf="tab == 1" class="user-permissions-section">
+      <div class="user-search">
+        <h4>User Permissions</h4>
+        <div class="search-bar">
+          <input type="text" 
+                 [(ngModel)]="searchUser" 
+                 placeholder="Enter SteamID64 to search..."
+                 (keyup.enter)="searchUserPermissions()">
+          <button (click)="searchUserPermissions()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="selectedUser" class="user-permissions-content">
+        <h4>Permissions for {{selectedUser}}</h4>
+        <div class="plugins-permissions">
+          <div class="plugin-section" *ngFor="let pluginPerm of pluginPermissions">
+            <div class="plugin-header">
+              <h5>{{pluginPerm.plugin}}</h5>
+              <span class="permission-count">
+                {{pluginPerm.permissions.filter(p => hasUserPermission(p)).length}}/{{pluginPerm.permissions.length}}
+              </span>
+            </div>
+            
+            <div class="permissions-grid">
+              <button class="permission-btn" 
+                      *ngFor="let permission of pluginPerm.permissions"
+                      [class.active]="hasUserPermission(permission)"
+                      (click)="toggleUserPermission(permission)"
+                      [pTooltip]="permission"
+                      tooltipPosition="top">
+                {{permission.split('.').slice(1).join('.')}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>

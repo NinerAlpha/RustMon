@@ -21,4 +21,21 @@ export const environment = {
     LOGGING: process.env.APM_LOGGING ? process.env.APM_LOGGING as LogLevel : 'off',
   },
   secondsCacheUsers: process.env.CACHE_TTL ? parseInt(process.env.CACHE_TTL) : 604800, // 7 days of cache
+  auth: {
+    jwtSecret: process.env.JWT_SECRET || 'your-secret-key',
+    discord: {
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET
+    },
+    steam: {
+      apiKey: process.env.STEAM_API_KEY
+    },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    }
+  },
+  frontend: {
+    url: process.env.FRONTEND_URL || 'http://localhost:4200'
+  }
 }

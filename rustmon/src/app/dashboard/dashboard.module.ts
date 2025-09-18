@@ -27,6 +27,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PterodactylConfigComponent } from './pterodactyl-config/pterodactyl-config.component';
 import { PluginManagerComponent } from './plugin-manager/plugin-manager.component';
 import { ConVarsManagerComponent } from './convars-manager/convars-manager.component';
+import { PermissionsV2Component } from './permissions-v2/permissions-v2.component';
+import { WipeManagerComponent } from './wipe-manager/wipe-manager.component';
 
 const routes: Routes = [
   {
@@ -51,6 +53,8 @@ const routes: Routes = [
     PterodactylConfigComponent,
     PluginManagerComponent,
     ConVarsManagerComponent,
+    PermissionsV2Component,
+    WipeManagerComponent,
   ],
   imports: [
     CommonModule,

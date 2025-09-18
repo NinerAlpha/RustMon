@@ -6,8 +6,17 @@ import { ConnectedGuard } from './utils/connected.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/landing',
     pathMatch: 'full'
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./landing/landing.module').then(m => m.LandingModule)
+  },
+  {
+    path: 'user-dashboard',
+    loadChildren: () => import('./user-dashboard/user-dashboard.module').then(m => m.UserDashboardModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -15,8 +24,13 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
+    redirectTo: '/user-dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'server/:id',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [ConnectedGuard]
+    canActivate: [AuthGuard]
   }
 ];
 

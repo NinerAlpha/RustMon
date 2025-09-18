@@ -54,6 +54,14 @@ button.compact {
   padding: 0px 15px;
   font-size: 10px;
   margin-right: 5px;
+  
+  &.update-btn {
+    background-color: #ff9800;
+    
+    &:hover {
+      background-color: #f57c00;
+    }
+  }
 }
 
 

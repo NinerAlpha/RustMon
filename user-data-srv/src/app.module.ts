@@ -10,6 +10,8 @@ import { environment } from './environment';
 import { ApmModule } from '@student-coin/elastic-apm-nest';
 import { PterodactylModule } from './pterodactyl/pterodactyl.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/auth.module';
+import { ServersModule } from './servers/servers.module';
 
 const imports: any = environment.APM.enabled ? [
   ApmModule.forRootAsync({
@@ -31,6 +33,8 @@ const imports: any = environment.APM.enabled ? [
   imports: [
     HttpModule,
     PterodactylModule,
+    AuthModule,
+    ServersModule,
     MulterModule.register({
       dest: './uploads',
     })

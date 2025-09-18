@@ -1,0 +1,192 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="assets/logomon.png" alt="RustMon" class="header-logo">
+        <h1>RustMon Dashboard</h1>
+      </div>
+      
+      <div class="user-section">
+        <div class="user-info" *ngIf="user">
+          <img [src]="user.avatar" [alt]="user.username" class="user-avatar">
+          <span class="user-name">{{user.username}}</span>
+          <button class="logout-btn" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="main-content">
+      <div class="servers-section">
+        <div class="section-header">
+          <h2>Your Rust Servers</h2>
+          <button class="add-server-btn" (click)="showAddServer = true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+            </svg>
+            Add Server
+          </button>
+        </div>
+
+        <div class="servers-grid" *ngIf="servers.length > 0">
+          <div class="server-card" *ngFor="let server of servers" [class]="getServerStatusClass(server)">
+            <div class="server-header">
+              <div class="server-info">
+                <h3 class="server-name">{{server.name}}</h3>
+                <p class="server-address">{{server.ip}}:{{server.rconPort}}</p>
+                <span class="connection-type">{{server.connectionType | titlecase}}</span>
+              </div>
+              <div class="server-status">
+                <div class="status-indicator" [class]="getServerStatusClass(server)"></div>
+              </div>
+            </div>
+            
+            <div class="server-stats" *ngIf="server.stats">
+              <div class="stat">
+                <span class="stat-label">Players</span>
+                <span class="stat-value">{{server.stats.players}}/{{server.stats.maxPlayers}}</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">FPS</span>
+                <span class="stat-value">{{server.stats.fps}}</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Uptime</span>
+                <span class="stat-value">{{server.stats.uptime | uptime}}</span>
+              </div>
+            </div>
+            
+            <div class="server-actions">
+              <button class="action-btn primary" (click)="connectToServer(server)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path fill="currentColor" d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320z"/>
+                </svg>
+                Manage
+              </button>
+              <button class="action-btn secondary" (click)="testConnection(server)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                  <path fill="currentColor" d="M54.2 202.9C123.2 136.7 216.8 96 320 96s196.8 40.7 265.8 106.9c12.8 12.2 33 11.8 45.2-.9s11.8-33-.9-45.2C549.7 79.5 440.4 32 320 32S90.3 79.5 9.8 156.7C-2.9 169-3.3 189.2 8.9 202s32.5 13.2 45.2 .9zM320 256c56.8 0 108.6 21.1 148.2 56c13.3 11.7 33.5 10.4 45.2-2.8s10.4-33.5-2.8-45.2C459.8 219.2 393 192 320 192s-139.8 27.2-190.5 72c-13.3 11.7-14.5 31.9-2.8 45.2s31.9 14.5 45.2 2.8c39.5-34.9 91.3-56 148.2-56zm64 160a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/>
+                </svg>
+                Test
+              </button>
+              <button class="action-btn danger" (click)="deleteServer(server)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                  <path fill="currentColor" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="servers.length === 0 && !loading">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+              <path fill="currentColor" d="M54.2 202.9C123.2 136.7 216.8 96 320 96s196.8 40.7 265.8 106.9c12.8 12.2 33 11.8 45.2-.9s11.8-33-.9-45.2C549.7 79.5 440.4 32 320 32S90.3 79.5 9.8 156.7C-2.9 169-3.3 189.2 8.9 202s32.5 13.2 45.2 .9zM320 256c56.8 0 108.6 21.1 148.2 56c13.3 11.7 33.5 10.4 45.2-2.8s10.4-33.5-2.8-45.2C459.8 219.2 393 192 320 192s-139.8 27.2-190.5 72c-13.3 11.7-14.5 31.9-2.8 45.2s31.9 14.5 45.2 2.8c39.5-34.9 91.3-56 148.2-56zm64 160a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/>
+            </svg>
+          </div>
+          <h3>No servers yet</h3>
+          <p>Add your first Rust server to get started with RustMon</p>
+          <button class="add-first-server-btn" (click)="showAddServer = true">Add Your First Server</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Server Modal -->
+<div class="modal-overlay" *ngIf="showAddServer" (click)="showAddServer = false">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Add New Server</h3>
+      <button class="close-btn" (click)="showAddServer = false">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+          <path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Server Name *</label>
+        <input type="text" [(ngModel)]="newServer.name" placeholder="My Rust Server">
+      </div>
+      
+      <div class="form-group">
+        <label>Connection Type</label>
+        <select [(ngModel)]="newServer.connectionType">
+          <option value="rcon">RCON Only</option>
+          <option value="pterodactyl">Pterodactyl Panel</option>
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Server IP *</label>
+          <input type="text" [(ngModel)]="newServer.ip" placeholder="192.168.1.100">
+        </div>
+        <div class="form-group">
+          <label>RCON Port *</label>
+          <input type="number" [(ngModel)]="newServer.rconPort" placeholder="28016">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>RCON Password *</label>
+        <input type="password" [(ngModel)]="newServer.rconPassword" placeholder="your-rcon-password">
+      </div>
+      
+      <div class="pterodactyl-section" *ngIf="newServer.connectionType === 'pterodactyl'">
+        <h4>Pterodactyl Configuration</h4>
+        
+        <div class="form-group">
+          <label>Panel URL</label>
+          <input type="text" [(ngModel)]="newServer.pterodactylConfig.panelUrl" placeholder="https://panel.example.com">
+        </div>
+        
+        <div class="form-group">
+          <label>API Key</label>
+          <input type="password" [(ngModel)]="newServer.pterodactylConfig.apiKey" placeholder="ptlc_...">
+        </div>
+        
+        <div class="form-group">
+          <label>Server ID</label>
+          <input type="text" [(ngModel)]="newServer.pterodactylConfig.serverId" placeholder="abc123def">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>SFTP Host</label>
+            <input type="text" [(ngModel)]="newServer.pterodactylConfig.sftpHost" placeholder="sftp.example.com">
+          </div>
+          <div class="form-group">
+            <label>SFTP Port</label>
+            <input type="number" [(ngModel)]="newServer.pterodactylConfig.sftpPort" placeholder="2022">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>SFTP Username</label>
+            <input type="text" [(ngModel)]="newServer.pterodactylConfig.sftpUsername" placeholder="abc123def.user">
+          </div>
+          <div class="form-group">
+            <label>SFTP Password</label>
+            <input type="password" [(ngModel)]="newServer.pterodactylConfig.sftpPassword">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn secondary" (click)="showAddServer = false">Cancel</button>
+      <button class="btn primary" (click)="addServer()">Add Server</button>
+    </div>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>

@@ -54,9 +54,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // pannels:
   permsPanel = false;
+  permsV2Panel = false;
+  wipeManagerPanel = false;
   pterodactylConfigPanel = false;
   pluginManagerPanel = false;
   conVarsPanel = false;
+
+  currentServerId = 'default-server'; // This should come from route params in real implementation
 
   @ViewChild('chatCompo', {static: false}) chatCompo?: ChatComponent;
   @ViewChild('console', {static: false}) consoleBox: any;

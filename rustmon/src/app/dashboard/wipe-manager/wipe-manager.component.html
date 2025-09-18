@@ -1,0 +1,174 @@
+<div class="container">
+  <article>
+    <header>
+      Wipe Manager
+      <svg (click)="close.emit()" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" class="svg-inline--fa fa-times fa-w-11">
+        <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" class=""></path>
+      </svg>
+    </header>
+    
+    <section class="wipe-content">
+      <div class="schedule-section">
+        <div class="section-header">
+          <h3>Wipe Schedule</h3>
+          <div class="schedule-toggle">
+            <span>Enabled</span>
+            <p-inputSwitch [(ngModel)]="schedule.enabled"></p-inputSwitch>
+          </div>
+        </div>
+        
+        <div class="schedule-config" *ngIf="schedule.enabled">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Frequency</label>
+              <select [(ngModel)]="schedule.frequency">
+                <option *ngFor="let freq of frequencies" [value]="freq.value">{{freq.label}}</option>
+              </select>
+            </div>
+            
+            <div class="form-group" *ngIf="schedule.frequency === 'weekly' || schedule.frequency === 'bi-weekly'">
+              <label>Day of Week</label>
+              <select [(ngModel)]="schedule.dayOfWeek">
+                <option *ngFor="let day of daysOfWeek" [value]="day.value">{{day.label}}</option>
+              </select>
+            </div>
+            
+            <div class="form-group" *ngIf="schedule.frequency === 'monthly'">
+              <label>Day of Month</label>
+              <input type="number" min="1" max="31" [(ngModel)]="schedule.dayOfMonth">
+            </div>
+            
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="schedule.time">
+            </div>
+          </div>
+          
+          <div class="next-wipe-info">
+            <strong>Next Wipe: </strong>
+            <span class="next-wipe-date">{{getNextWipeDate()}}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="wipe-options-section">
+        <h3>Wipe Options</h3>
+        
+        <div class="options-grid">
+          <div class="option-card">
+            <div class="option-header">
+              <span class="option-title">Wipe Map</span>
+              <p-inputSwitch [(ngModel)]="schedule.options.wipeMap"></p-inputSwitch>
+            </div>
+            <p class="option-description">Generate a new map with new terrain and monuments</p>
+          </div>
+          
+          <div class="option-card">
+            <div class="option-header">
+              <span class="option-title">Wipe Player Data</span>
+              <p-inputSwitch [(ngModel)]="schedule.options.wipePlayerData"></p-inputSwitch>
+            </div>
+            <p class="option-description">Reset all player inventories, bases, and progress</p>
+          </div>
+          
+          <div class="option-card">
+            <div class="option-header">
+              <span class="option-title">Wipe Blueprints</span>
+              <p-inputSwitch [(ngModel)]="schedule.options.wipeBlueprintData"></p-inputSwitch>
+            </div>
+            <p class="option-description">Reset all learned blueprints (rare, usually monthly)</p>
+          </div>
+        </div>
+        
+        <div class="map-config" *ngIf="schedule.options.wipeMap">
+          <h4>Map Configuration</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Map Size</label>
+              <select [(ngModel)]="schedule.options.mapSize">
+                <option *ngFor="let size of mapSizes" [value]="size.value">{{size.label}}</option>
+              </select>
+              <input *ngIf="schedule.options.mapSize === 0" 
+                     type="number" 
+                     [(ngModel)]="customMapSize" 
+                     placeholder="Custom size"
+                     class="custom-input">
+            </div>
+            
+            <div class="form-group">
+              <div class="seed-options">
+                <div class="seed-option">
+                  <input type="radio" 
+                         id="randomSeed" 
+                         [(ngModel)]="schedule.options.randomSeed" 
+                         [value]="true">
+                  <label for="randomSeed">Random Seed</label>
+                </div>
+                <div class="seed-option">
+                  <input type="radio" 
+                         id="customSeed" 
+                         [(ngModel)]="schedule.options.randomSeed" 
+                         [value]="false">
+                  <label for="customSeed">Custom Seed</label>
+                  <input *ngIf="!schedule.options.randomSeed" 
+                         type="number" 
+                         [(ngModel)]="schedule.options.customSeed" 
+                         placeholder="Enter seed"
+                         class="custom-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group" *ngIf="!schedule.options.randomSeed">
+            <label>Custom Map URL (optional)</label>
+            <input type="text" 
+                   [(ngModel)]="schedule.options.customMapUrl" 
+                   placeholder="https://example.com/custom-map.map">
+            <small>Leave empty to generate procedural map with custom seed</small>
+          </div>
+        </div>
+        
+        <div class="startup-commands">
+          <h4>Startup Commands</h4>
+          <p class="description">Commands to execute after wipe completion</p>
+          
+          <div class="commands-list" *ngIf="schedule.options.startupCommands?.length">
+            <div class="command-item" *ngFor="let command of schedule.options.startupCommands; let i = index">
+              <span class="command-text">{{command}}</span>
+              <button class="remove-command" (click)="removeStartupCommand(i)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                  <path fill="currentColor" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <button class="add-command-btn" (click)="addStartupCommand()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+            </svg>
+            Add Command
+          </button>
+        </div>
+      </div>
+      
+      <div class="immediate-wipe-section">
+        <h3>Immediate Wipe</h3>
+        <p>Execute a wipe right now using the current settings</p>
+        <button class="wipe-now-btn" (click)="executeWipeNow()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="currentColor" d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/>
+          </svg>
+          Execute Wipe Now
+        </button>
+      </div>
+    </section>
+    
+    <footer>
+      <button class="btn secondary" (click)="close.emit()">Cancel</button>
+      <button class="btn primary" (click)="saveSchedule()">Save Schedule</button>
+    </footer>
+  </article>
+</div>

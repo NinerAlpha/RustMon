@@ -1,6 +1,13 @@
 #data {
+  background: linear-gradient(135deg, rgba(43, 41, 36, 0.95) 0%, rgba(26, 24, 21, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  margin: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   nav {
-    background-color: #181818;
+    background: linear-gradient(135deg, #181818, #222);
+    border-radius: 12px 12px 0 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,11 +28,18 @@
       color: #f7ebe1;
       padding: 7px;
       font-size: 14px;
-      border: 1px solid #3e3e3e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       margin: 0px 5px;
-      border-radius: 5px;
+      border-radius: 8px;
       padding-left: 32px;
       position: relative;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        border-color: #cd412b;
+        box-shadow: 0 4px 12px rgba(205, 65, 43, 0.2);
+      }
       svg {
         width: 18px;
         height: 18px;
@@ -71,19 +85,28 @@
     width: 100%;
     margin: 1vh 5px;
     padding: 5px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 7px;
+    background: rgba(24, 24, 24, 0.8);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     height: calc(90vh - 30px);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: rgba(205, 65, 43, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
     header {
       text-align: center;
       font-size: 20px;
       color: gray;
-      background: #181818;
+      background: linear-gradient(135deg, #181818, #222);
       height: 40px;
       line-height: 40px;
       margin-bottom: 3px;
       font-family: Helvetica;
       position: relative;
+      border-radius: 8px;
       svg {
         width: 20px;
         cursor: pointer;
@@ -283,11 +306,11 @@ app-players {
 }
 
 button.mini {
-  background-color: #cd412b;
-  border: 1px solid black;
+  background: linear-gradient(135deg, #cd412b, #b8371f);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
   outline: none;
   align-items: center;
   display: inline-flex;
@@ -295,4 +318,16 @@ button.mini {
   width: 35px;
   height: 35px;
   padding: 5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(205, 65, 43, 0.3);
+    background: linear-gradient(135deg, #e74c3c, #cd412b);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 }

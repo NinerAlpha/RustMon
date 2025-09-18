@@ -138,7 +138,9 @@ export class PterodactylService {
         password: config.sftpPassword
       });
 
-      const pluginsDir = '/oxide/plugins';
+      // Detect framework and use appropriate directory
+      const framework = await this.detectFramework(sftp);
+      const pluginsDir = framework === 'carbon' ? '/carbon/plugins' : '/oxide/plugins';
       const filePath = `${pluginsDir}/${file.originalname}`;
       
       await sftp.put(file.buffer, filePath);
@@ -207,7 +209,9 @@ export class PterodactylService {
         password: config.sftpPassword
       });
 
-      const pluginsDir = '/oxide/plugins';
+      // Detect framework and use appropriate directory
+      const framework = await this.detectFramework(sftp);
+      const pluginsDir = framework === 'carbon' ? '/carbon/plugins' : '/oxide/plugins';
       const filePath = `${pluginsDir}/${pluginId}.cs`;
       
       await sftp.put(Buffer.from(response.data), filePath);
@@ -334,5 +338,25 @@ export class PterodactylService {
   private decryptSensitiveData(data: string): string {
     // Simple base64 decoding for demo - use proper decryption in production
     return Buffer.from(data, 'base64').toString('utf8');
+  }
+
+  private async detectFramework(sftp: Client): Promise<'oxide' | 'carbon'> {
+    try {
+      const carbonExists = await sftp.exists('/carbon');
+      if (carbonExists) {
+        return 'carbon';
+      }
+      
+      const oxideExists = await sftp.exists('/oxide');
+      if (oxideExists) {
+        return 'oxide';
+      }
+      
+      // Default to oxide if neither is found
+      return 'oxide';
+    } catch (error) {
+      this.logger.error('Framework detection failed:', error);
+      return 'oxide';
+    }
   }
 }

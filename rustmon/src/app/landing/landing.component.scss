@@ -1,0 +1,241 @@
+.landing-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2b2924 0%, #1a1815 100%);
+  background-image: url(/assets/blur.png);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.hero-content {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+.logo-section {
+  margin-bottom: 4rem;
+  
+  .hero-logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #cd412b;
+    margin: 0 0 1rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+    color: #f7ebe1;
+    margin: 0 0 3rem 0;
+    opacity: 0.9;
+  }
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+  
+  .feature-card {
+    background: rgba(24, 24, 24, 0.8);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    
+    &:hover {
+      transform: translateY(-5px);
+      border-color: #cd412b;
+      box-shadow: 0 10px 30px rgba(205, 65, 43, 0.2);
+    }
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #cd412b, #e74c3c);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 30px;
+        height: 30px;
+        color: white;
+      }
+    }
+    
+    h3 {
+      color: #f7ebe1;
+      font-size: 1.25rem;
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+    }
+    
+    p {
+      color: #a5a5a5;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+}
+
+.auth-section {
+  background: rgba(24, 24, 24, 0.9);
+  border-radius: 16px;
+  padding: 3rem;
+  backdrop-filter: blur(20px);
+  border: 1px solid #333;
+  
+  h2 {
+    color: #f7ebe1;
+    font-size: 2rem;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+  }
+  
+  p {
+    color: #a5a5a5;
+    font-size: 1.1rem;
+    margin: 0 0 2rem 0;
+  }
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+  
+  .auth-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    &.discord {
+      background: #5865f2;
+      color: white;
+      
+      &:hover {
+        background: #4752c4;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(88, 101, 242, 0.3);
+      }
+    }
+    
+    &.steam {
+      background: #171a21;
+      color: white;
+      border: 1px solid #2a475e;
+      
+      &:hover {
+        background: #1b2838;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(42, 71, 94, 0.3);
+      }
+    }
+    
+    &.google {
+      background: white;
+      color: #333;
+      border: 1px solid #dadce0;
+      
+      &:hover {
+        background: #f8f9fa;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}
+
+.landing-footer {
+  background: rgba(24, 24, 24, 0.95);
+  border-top: 1px solid #333;
+  padding: 2rem;
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: #a5a5a5;
+      
+      a {
+        color: #cd412b;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color 0.3s ease;
+        
+        &:hover {
+          color: #e74c3c;
+        }
+        
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem !important;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .auth-section {
+    padding: 2rem;
+  }
+}
